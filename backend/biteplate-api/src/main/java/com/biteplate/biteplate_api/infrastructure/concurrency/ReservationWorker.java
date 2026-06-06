@@ -2,42 +2,37 @@ package com.biteplate.biteplate_api.infrastructure.concurrency;
 
 import com.biteplate.biteplate_api.reservation.application.service.ReservationService;
 
-public class ReservationWorker
-        implements Runnable {
+public class ReservationWorker implements Runnable {
 
-    private final ReservationQueue queue;
+    private final ReservationQueue reservationQueue;
 
     private final ReservationService reservationService;
 
     public ReservationWorker(
-            ReservationQueue queue,
+            ReservationQueue reservationQueue,
             ReservationService reservationService
     ) {
-        this.queue = queue;
+        this.reservationQueue = reservationQueue;
         this.reservationService = reservationService;
     }
 
     @Override
     public void run() {
 
-        while (true) {
+        while (!Thread.currentThread().isInterrupted()) {
 
             try {
 
                 ReservationTask task =
-                        queue.take();
+                        reservationQueue.take();
 
-                reservationService
-                        .createReservation(
-                                task.getReservation()
-                        );
+                reservationService.createReservation(
+                        task.getReservation()
+                );
 
             } catch (InterruptedException e) {
 
-                Thread.currentThread()
-                        .interrupt();
-
-                break;
+                Thread.currentThread().interrupt();
 
             }
 
