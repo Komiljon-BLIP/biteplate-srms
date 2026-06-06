@@ -1,5 +1,9 @@
 package com.biteplate.biteplate_api.infrastructure.concurrency;
 
+import com.biteplate.biteplate_api.reservation.domain.model.Reservation;
+import org.springframework.stereotype.Component;
+
+@Component
 public class ConcurrencyManager {
 
     private final ReservationQueue reservationQueue;
@@ -11,12 +15,39 @@ public class ConcurrencyManager {
     }
 
     public void submitReservation(
-            ReservationTask task
-    ) throws InterruptedException {
+            Reservation reservation
+    ) {
 
-        reservationQueue.submit(
-                task
-        );
+        try {
+
+            ReservationTask task =
+                    new ReservationTask(
+                            reservation
+                    );
+
+            reservationQueue.submit(
+                    task
+            );
+
+        } catch (InterruptedException e) {
+
+            Thread.currentThread()
+                    .interrupt();
+
+            throw new RuntimeException(
+                    "Reservation submission interrupted.",
+                    e
+            );
+
+        }
+
+    }
+
+    // ADD THIS METHOD HERE
+
+    public int getQueueSize() {
+
+        return reservationQueue.size();
 
     }
 
