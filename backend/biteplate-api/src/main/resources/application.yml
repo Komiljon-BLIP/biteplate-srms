@@ -1,9 +1,22 @@
 spring:
+
   datasource:
-    url:
-    username:
-    password:
+    url: jdbc:postgresql://localhost:1234/biteplate
+    username: postgres
+    password: Kama@12345
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+    show-sql: true
+
+    properties:
+      hibernate:
+        format_sql: true
 
   rabbitmq:
-    host:
-    port:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
