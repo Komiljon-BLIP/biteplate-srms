@@ -1,10 +1,40 @@
 package com.biteplate.biteplate_api.reservation.infrastructure.persistence;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import com.biteplate.biteplate_api.reservation.domain.enums.ReservationStatus;
+import com.biteplate.biteplate_api.reservation.domain.enums.TableType;
+import jakarta.persistence.*;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "reservations")
 public class ReservationEntity {
+
+    @Id
+    private UUID id;
+
+    private String customerName;
+
+    private String phoneNumber;
+
+    private String email;
+
+    private Long tableId;
+
+    @Enumerated(EnumType.STRING)
+    private TableType tableType;
+
+    private Integer guestCount;
+
+    @Enumerated(EnumType.STRING)
+    private ReservationStatus status;
+
+    private LocalDateTime createdAt;
+
+    private LocalDateTime updatedAt;
+
+    public ReservationEntity() {
+    }
 
 }
