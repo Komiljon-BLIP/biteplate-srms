@@ -4,7 +4,9 @@ package com.biteplate.biteplate_api.reservation.infrastructure.mapper;
 import com.biteplate.biteplate_api.reservation.domain.model.Reservation;
 import com.biteplate.biteplate_api.reservation.domain.valueobject.CustomerInfo;
 import com.biteplate.biteplate_api.reservation.infrastructure.persistence.ReservationEntity;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ReservationMapper {
 
     public ReservationEntity toEntity(

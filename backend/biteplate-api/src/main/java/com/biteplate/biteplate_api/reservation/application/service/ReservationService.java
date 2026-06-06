@@ -5,8 +5,11 @@ import com.biteplate.biteplate_api.reservation.application.usecase.CancelReserva
 import com.biteplate.biteplate_api.reservation.application.usecase.CreateReservationUseCase;
 import com.biteplate.biteplate_api.reservation.domain.model.Reservation;
 import com.biteplate.biteplate_api.reservation.domain.repository.ReservationRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.UUID;
+
+@Service
 
 public class ReservationService
         implements
