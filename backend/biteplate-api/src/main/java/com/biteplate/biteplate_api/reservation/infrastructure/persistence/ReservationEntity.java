@@ -3,12 +3,20 @@ package com.biteplate.biteplate_api.reservation.infrastructure.persistence;
 import com.biteplate.biteplate_api.reservation.domain.enums.ReservationStatus;
 import com.biteplate.biteplate_api.reservation.domain.enums.TableType;
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
-
 @Entity
 @Table(name = "reservations")
+
+@Getter
+@Setter
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+
 public class ReservationEntity {
 
     @Id
@@ -33,8 +41,5 @@ public class ReservationEntity {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
-
-    public ReservationEntity() {
-    }
 
 }
