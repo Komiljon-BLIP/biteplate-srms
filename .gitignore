@@ -1,0 +1,22 @@
+# Maven
+target/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# macOS
+.DS_Store
+
+# Logs
+logs/
+*.log
+
+# Environment
+.env
+
+# Java
+*.class
+
+# Build
+out/

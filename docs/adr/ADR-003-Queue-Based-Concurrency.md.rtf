@@ -1,0 +1,58 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2709
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 # ADR-003: Queue-Based Reservation Processing\
+\
+## Status\
+\
+Accepted\
+\
+## Context\
+\
+The tutor will evaluate the Reservation API using JMeter with between 100 and 10,000 concurrent users.\
+\
+Traditional optimistic and pessimistic database locking mechanisms were considered.\
+\
+However, heavy lock contention may reduce performance under high load.\
+\
+## Decision\
+\
+Reservation requests will first enter a reservation queue.\
+\
+A Reservation Worker will process requests in a controlled manner.\
+\
+Architecture:\
+\
+Client\
+   \uc0\u8595 \
+Reservation API\
+   \uc0\u8595 \
+Concurrency Manager\
+   \uc0\u8595 \
+Reservation Queue\
+   \uc0\u8595 \
+Reservation Worker\
+   \uc0\u8595 \
+PostgreSQL\
+\
+## Consequences\
+\
+Advantages:\
+\
+- Better concurrency control\
+- Reduced lock contention\
+- Improved scalability\
+- Predictable processing\
+\
+Disadvantages:\
+\
+- Slight increase in latency\
+- Additional architectural component\
+\
+## Justification\
+\
+Queue-based processing provides a more scalable approach for handling reservation spikes while maintaining data consistency.}
