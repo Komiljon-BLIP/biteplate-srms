@@ -1,7 +1,5 @@
 package com.biteplate.biteplate_api.infrastructure.concurrency;
 
-
-
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -22,6 +20,12 @@ public class ReservationQueue {
             throws InterruptedException {
 
         return queue.take();
+
+    }
+
+    public int size() {
+
+        return queue.size();
 
     }
 
