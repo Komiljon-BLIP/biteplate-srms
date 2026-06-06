@@ -1,9 +1,9 @@
 package com.biteplate.biteplate_api.reservation.api.controller;
 
+import com.biteplate.biteplate_api.infrastructure.concurrency.ConcurrencyManager;
 import com.biteplate.biteplate_api.reservation.api.mapper.ReservationApiMapper;
 import com.biteplate.biteplate_api.reservation.api.request.CreateReservationRequest;
 import com.biteplate.biteplate_api.reservation.api.response.ReservationResponse;
-import com.biteplate.biteplate_api.reservation.application.service.ReservationService;
 import com.biteplate.biteplate_api.reservation.domain.model.Reservation;
 import com.biteplate.biteplate_api.shared.response.ApiResponse;
 import jakarta.validation.Valid;
@@ -16,14 +16,14 @@ public class ReservationController {
 
     private final ReservationApiMapper apiMapper;
 
-    private final ReservationService reservationService;
+    private final ConcurrencyManager concurrencyManager;
 
     public ReservationController(
             ReservationApiMapper apiMapper,
-            ReservationService reservationService
+            ConcurrencyManager concurrencyManager
     ) {
         this.apiMapper = apiMapper;
-        this.reservationService = reservationService;
+        this.concurrencyManager = concurrencyManager;
     }
 
     @PostMapping
@@ -39,7 +39,7 @@ public class ReservationController {
                         request
                 );
 
-        reservationService.createReservation(
+        concurrencyManager.submitReservation(
                 reservation
         );
 
@@ -47,13 +47,46 @@ public class ReservationController {
                 new ReservationResponse(
                         reservation.getId(),
                         reservation.getStatus(),
-                        "Reservation created successfully."
+                        "Reservation request accepted and added to processing queue."
                 );
 
         return ResponseEntity.ok(
                 new ApiResponse<>(
                         true,
                         response
+                )
+        );
+
+    }
+
+    @GetMapping("/queue/status")
+    public ResponseEntity<ApiResponse<Integer>>
+    getQueueStatus() {
+
+        return ResponseEntity.ok(
+
+                new ApiResponse<>(
+
+                        true,
+
+                        concurrencyManager.getQueueSize()
+
+                )
+
+        );
+
+    }
+    @GetMapping("/queue/details")
+    public ResponseEntity<ApiResponse<String>> getQueueDetails() {
+
+        String message =
+                "Current queue size: "
+                        + concurrencyManager.getQueueSize();
+
+        return ResponseEntity.ok(
+                new ApiResponse<>(
+                        true,
+                        message
                 )
         );
 
