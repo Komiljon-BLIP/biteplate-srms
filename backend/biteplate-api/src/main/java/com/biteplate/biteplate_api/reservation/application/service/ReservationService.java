@@ -1,6 +1,5 @@
 package com.biteplate.biteplate_api.reservation.application.service;
 
-
 import com.biteplate.biteplate_api.reservation.application.usecase.CancelReservationUseCase;
 import com.biteplate.biteplate_api.reservation.application.usecase.CreateReservationUseCase;
 import com.biteplate.biteplate_api.reservation.domain.model.Reservation;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Service;
 import java.util.UUID;
 
 @Service
-
 public class ReservationService
         implements
         CreateReservationUseCase,
@@ -32,6 +30,7 @@ public class ReservationService
         return reservationRepository.save(
                 reservation
         );
+
     }
 
     @Override

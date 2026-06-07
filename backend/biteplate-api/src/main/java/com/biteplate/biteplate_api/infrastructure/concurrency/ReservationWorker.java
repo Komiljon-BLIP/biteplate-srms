@@ -34,6 +34,13 @@ public class ReservationWorker implements Runnable {
 
                 Thread.currentThread().interrupt();
 
+            } catch (Exception e) {
+
+                System.err.println(
+                        "Reservation processing failed: "
+                                + e.getMessage()
+                );
+
             }
 
         }

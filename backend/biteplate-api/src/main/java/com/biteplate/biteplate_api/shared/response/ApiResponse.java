@@ -6,12 +6,25 @@ public class ApiResponse<T> {
 
     private T data;
 
+    private String message;
+
     public ApiResponse(
             boolean success,
             T data
     ) {
         this.success = success;
         this.data = data;
+        this.message = null;
+    }
+
+    public ApiResponse(
+            boolean success,
+            T data,
+            String message
+    ) {
+        this.success = success;
+        this.data = data;
+        this.message = message;
     }
 
     public boolean isSuccess() {
@@ -21,4 +34,9 @@ public class ApiResponse<T> {
     public T getData() {
         return data;
     }
+
+    public String getMessage() {
+        return message;
+    }
+
 }

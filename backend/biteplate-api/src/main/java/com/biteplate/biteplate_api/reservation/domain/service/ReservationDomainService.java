@@ -1,9 +1,11 @@
 package com.biteplate.biteplate_api.reservation.domain.service;
 
 import com.biteplate.biteplate_api.reservation.domain.model.Reservation;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalTime;
 
+@Component
 public class ReservationDomainService {
 
     private static final int MIN_GUESTS = 1;
@@ -33,15 +35,29 @@ public class ReservationDomainService {
             Reservation reservation
     ) {
 
-        return reservation.getGuestCount() >= MIN_GUESTS
+        Integer guestCount =
+                reservation.getGuestCount();
+
+        return guestCount != null
                 &&
-                reservation.getGuestCount() <= MAX_GUESTS;
+                guestCount >= MIN_GUESTS
+                &&
+                guestCount <= MAX_GUESTS;
 
     }
 
     public boolean isBusinessHours(
             Reservation reservation
     ) {
+
+        if (reservation == null
+                || reservation.getTimeSlot() == null
+                || reservation.getTimeSlot()
+                .getReservationTime() == null) {
+
+            return false;
+
+        }
 
         LocalTime reservationTime =
                 reservation

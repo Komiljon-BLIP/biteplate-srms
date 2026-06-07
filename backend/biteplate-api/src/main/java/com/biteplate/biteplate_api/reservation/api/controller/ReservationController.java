@@ -53,7 +53,8 @@ public class ReservationController {
         return ResponseEntity.ok(
                 new ApiResponse<>(
                         true,
-                        response
+                        response,
+                        "Reservation request accepted and added to processing queue."
                 )
         );
 
@@ -64,20 +65,18 @@ public class ReservationController {
     getQueueStatus() {
 
         return ResponseEntity.ok(
-
                 new ApiResponse<>(
-
                         true,
-
-                        concurrencyManager.getQueueSize()
-
+                        concurrencyManager.getQueueSize(),
+                        "Current queue size."
                 )
-
         );
 
     }
+
     @GetMapping("/queue/details")
-    public ResponseEntity<ApiResponse<String>> getQueueDetails() {
+    public ResponseEntity<ApiResponse<String>>
+    getQueueDetails() {
 
         String message =
                 "Current queue size: "
@@ -86,7 +85,8 @@ public class ReservationController {
         return ResponseEntity.ok(
                 new ApiResponse<>(
                         true,
-                        message
+                        message,
+                        "Queue details retrieved successfully."
                 )
         );
 
