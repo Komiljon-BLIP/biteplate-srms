@@ -6,8 +6,14 @@ import com.biteplate.biteplate_api.reservation.application.service.ReservationSe
 import jakarta.annotation.PostConstruct;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 @Configuration
 public class ConcurrencyConfig {
+
+    private static final int
+            WORKER_COUNT = 5;
 
     private final ReservationQueue reservationQueue;
 
@@ -22,31 +28,34 @@ public class ConcurrencyConfig {
     }
 
     @PostConstruct
-    public void startWorker() {
+    public void startWorkers() {
 
-        ReservationWorker worker =
-                new ReservationWorker(
-                        reservationQueue,
-                        reservationService
+        ExecutorService executorService =
+                Executors.newFixedThreadPool(
+                        WORKER_COUNT
                 );
 
-        Thread workerThread =
-                new Thread(
-                        worker
-                );
+        for (int i = 1;
+             i <= WORKER_COUNT;
+             i++) {
 
-        workerThread.setDaemon(
-                true
-        );
+            ReservationWorker worker =
+                    new ReservationWorker(
+                            reservationQueue,
+                            reservationService
+                    );
 
-        workerThread.setName(
-                "reservation-worker"
-        );
+            executorService.submit(
+                    worker
+            );
 
-        workerThread.start();
-        System.out.println(
-                "Reservation Worker Started..."
-        );
+            System.out.println(
+                    "Reservation Worker "
+                            + i
+                            + " Started..."
+            );
+
+        }
 
     }
 

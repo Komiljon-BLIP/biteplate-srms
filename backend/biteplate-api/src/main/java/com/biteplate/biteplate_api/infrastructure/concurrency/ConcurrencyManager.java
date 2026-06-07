@@ -48,7 +48,8 @@ public class ConcurrencyManager {
 
         } catch (InterruptedException e) {
 
-            Thread.currentThread().interrupt();
+            Thread.currentThread()
+                    .interrupt();
 
             throw new RuntimeException(
                     "Reservation submission interrupted.",

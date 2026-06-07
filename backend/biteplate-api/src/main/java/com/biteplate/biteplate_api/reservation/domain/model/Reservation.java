@@ -1,15 +1,18 @@
 package com.biteplate.biteplate_api.reservation.domain.model;
 
-
 import com.biteplate.biteplate_api.reservation.domain.enums.ReservationStatus;
 import com.biteplate.biteplate_api.reservation.domain.enums.TableType;
 import com.biteplate.biteplate_api.reservation.domain.valueobject.CustomerInfo;
 import com.biteplate.biteplate_api.reservation.domain.valueobject.ReservationTimeSlot;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-public class Reservation {
+public class Reservation
+        implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private UUID id;
 
@@ -93,4 +96,5 @@ public class Reservation {
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
+
 }
