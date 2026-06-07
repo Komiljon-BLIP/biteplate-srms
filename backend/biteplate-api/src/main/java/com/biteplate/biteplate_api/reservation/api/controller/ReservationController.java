@@ -4,11 +4,15 @@ import com.biteplate.biteplate_api.infrastructure.concurrency.ConcurrencyManager
 import com.biteplate.biteplate_api.reservation.api.mapper.ReservationApiMapper;
 import com.biteplate.biteplate_api.reservation.api.request.CreateReservationRequest;
 import com.biteplate.biteplate_api.reservation.api.response.ReservationResponse;
+import com.biteplate.biteplate_api.reservation.application.service.ReservationService;
+import com.biteplate.biteplate_api.reservation.domain.enums.ReservationStatus;
 import com.biteplate.biteplate_api.reservation.domain.model.Reservation;
 import com.biteplate.biteplate_api.shared.response.ApiResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/reservations")
@@ -18,12 +22,16 @@ public class ReservationController {
 
     private final ConcurrencyManager concurrencyManager;
 
+    private final ReservationService reservationService;
+
     public ReservationController(
             ReservationApiMapper apiMapper,
-            ConcurrencyManager concurrencyManager
+            ConcurrencyManager concurrencyManager,
+            ReservationService reservationService
     ) {
         this.apiMapper = apiMapper;
         this.concurrencyManager = concurrencyManager;
+        this.reservationService = reservationService;
     }
 
     @PostMapping
@@ -87,6 +95,93 @@ public class ReservationController {
                         true,
                         message,
                         "Queue details retrieved successfully."
+                )
+        );
+
+    }
+
+    @PostMapping("/{reservationId}/confirm")
+    public ResponseEntity<ApiResponse<ReservationResponse>>
+    confirmReservation(
+            @PathVariable
+            UUID reservationId
+    ) {
+
+        Reservation reservation =
+                reservationService
+                        .confirmReservation(
+                                reservationId
+                        );
+
+        ReservationResponse response =
+                new ReservationResponse(
+                        reservation.getId(),
+                        reservation.getStatus(),
+                        "Reservation confirmed successfully."
+                );
+
+        return ResponseEntity.ok(
+                new ApiResponse<>(
+                        true,
+                        response,
+                        "Reservation confirmed successfully."
+                )
+        );
+
+    }
+
+    @PostMapping("/{reservationId}/cancel")
+    public ResponseEntity<ApiResponse<ReservationResponse>>
+    cancelReservation(
+            @PathVariable
+            UUID reservationId
+    ) {
+
+        reservationService.cancelReservation(
+                reservationId
+        );
+
+        ReservationResponse response =
+                new ReservationResponse(
+                        reservationId,
+                        ReservationStatus.CANCELLED,
+                        "Reservation cancelled successfully."
+                );
+
+        return ResponseEntity.ok(
+                new ApiResponse<>(
+                        true,
+                        response,
+                        "Reservation cancelled successfully."
+                )
+        );
+
+    }
+    @GetMapping("/{reservationId}")
+    public ResponseEntity<ApiResponse<ReservationResponse>>
+    getReservation(
+            @PathVariable
+            UUID reservationId
+    ) {
+
+        Reservation reservation =
+                reservationService
+                        .getReservationById(
+                                reservationId
+                        );
+
+        ReservationResponse response =
+                new ReservationResponse(
+                        reservation.getId(),
+                        reservation.getStatus(),
+                        "Reservation retrieved successfully."
+                );
+
+        return ResponseEntity.ok(
+                new ApiResponse<>(
+                        true,
+                        response,
+                        "Reservation retrieved successfully."
                 )
         );
 

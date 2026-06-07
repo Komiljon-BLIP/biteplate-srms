@@ -9,8 +9,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-@Repository
 
+@Repository
 public class ReservationPersistenceAdapter
         implements ReservationRepository {
 
@@ -46,14 +46,26 @@ public class ReservationPersistenceAdapter
             UUID reservationId
     ) {
 
-        return Optional.empty();
+        return jpaRepository
+                .findById(
+                        reservationId
+                )
+                .map(
+                        mapper::toDomain
+                );
 
     }
 
     @Override
     public List<Reservation> findAll() {
 
-        return List.of();
+        return jpaRepository
+                .findAll()
+                .stream()
+                .map(
+                        mapper::toDomain
+                )
+                .toList();
 
     }
 

@@ -33,17 +33,65 @@ public class ReservationService
 
     }
 
+    public Reservation confirmReservation(
+            UUID reservationId
+    ) {
+
+        Reservation reservation =
+                reservationRepository
+                        .findById(
+                                reservationId
+                        )
+                        .orElseThrow(
+                                () -> new RuntimeException(
+                                        "Reservation not found."
+                                )
+                        );
+
+        reservation.confirm();
+
+        return reservationRepository.save(
+                reservation
+        );
+
+    }
+
     @Override
     public void cancelReservation(
             UUID reservationId
     ) {
 
-        reservationRepository
+        Reservation reservation =
+                reservationRepository
+                        .findById(
+                                reservationId
+                        )
+                        .orElseThrow(
+                                () -> new RuntimeException(
+                                        "Reservation not found."
+                                )
+                        );
+
+        reservation.cancel();
+
+        reservationRepository.save(
+                reservation
+        );
+
+    }
+
+    public Reservation getReservationById(
+            UUID reservationId
+    ) {
+
+        return reservationRepository
                 .findById(
                         reservationId
                 )
-                .ifPresent(
-                        Reservation::cancel
+                .orElseThrow(
+                        () -> new RuntimeException(
+                                "Reservation not found."
+                        )
                 );
 
     }

@@ -13,7 +13,7 @@ import java.util.concurrent.Executors;
 public class ConcurrencyConfig {
 
     private static final int
-            WORKER_COUNT = 5;
+            WORKER_COUNT = 10;
 
     private final ReservationQueue reservationQueue;
 

@@ -32,6 +32,8 @@ public class Reservation
 
     private LocalDateTime updatedAt;
 
+    // For NEW reservations
+
     public Reservation(
             UUID id,
             CustomerInfo customerInfo,
@@ -49,6 +51,30 @@ public class Reservation
         this.status = ReservationStatus.PENDING;
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
+    }
+
+    // For LOADING reservations from the database
+
+    public Reservation(
+            UUID id,
+            CustomerInfo customerInfo,
+            Long tableId,
+            TableType tableType,
+            Integer guestCount,
+            ReservationTimeSlot timeSlot,
+            ReservationStatus status,
+            LocalDateTime createdAt,
+            LocalDateTime updatedAt
+    ) {
+        this.id = id;
+        this.customerInfo = customerInfo;
+        this.tableId = tableId;
+        this.tableType = tableType;
+        this.guestCount = guestCount;
+        this.timeSlot = timeSlot;
+        this.status = status;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public void confirm() {

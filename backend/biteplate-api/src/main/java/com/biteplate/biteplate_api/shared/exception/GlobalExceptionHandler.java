@@ -28,17 +28,11 @@ public class GlobalExceptionHandler {
                         HttpStatus.BAD_REQUEST
                 )
                 .body(
-
                         new ApiResponse<>(
-
                                 false,
-
                                 null,
-
                                 errorMessage
-
                         )
-
                 );
 
     }
@@ -56,17 +50,11 @@ public class GlobalExceptionHandler {
                         HttpStatus.BAD_REQUEST
                 )
                 .body(
-
                         new ApiResponse<>(
-
                                 false,
-
                                 null,
-
                                 ex.getMessage()
-
                         )
-
                 );
 
     }
@@ -79,22 +67,20 @@ public class GlobalExceptionHandler {
             Exception ex
     ) {
 
+        ex.printStackTrace();
+
         return ResponseEntity
                 .status(
                         HttpStatus.INTERNAL_SERVER_ERROR
                 )
                 .body(
-
                         new ApiResponse<>(
-
                                 false,
-
                                 null,
-
-                                "Internal server error."
-
+                                ex.getClass().getSimpleName()
+                                        + ": "
+                                        + ex.getMessage()
                         )
-
                 );
 
     }
